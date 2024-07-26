@@ -31,9 +31,9 @@ public class CalculatorRequestProcessor implements RequestProcessor{
         String result = x + " + " + y + " = " + (x + y);
 
         String response =
-                    "HTTP/1.1 200 OK\n\r" +
-                    "Content-type: text/html\n\r" +
-                    "\n\r" +
+                    "HTTP/1.1 200 OK\r\n" +
+                    "Content-type: text/html\r\n" +
+                    "\r\n" +
                     "<html><body><h1>" + result + "</h1></body></html>";
 
         out.write(response.getBytes(StandardCharsets.UTF_8));

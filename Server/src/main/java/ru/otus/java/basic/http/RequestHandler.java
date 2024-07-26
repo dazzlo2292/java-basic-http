@@ -8,14 +8,12 @@ import java.util.concurrent.ExecutorService;
 
 public class RequestHandler {
     private final byte[] buffer;
-    private final Dispatcher dispatcher;
     private final Socket connection;
     private final OutputStream out;
     private final InputStream in;
 
-    public RequestHandler(ExecutorService pool, Socket connection) throws IOException {
+    public RequestHandler(ExecutorService pool, Socket connection, Dispatcher dispatcher) throws IOException {
         this.buffer = new byte[8192];
-        this.dispatcher = new Dispatcher();
         this.connection = connection;
         this.out = connection.getOutputStream();
         this.in = connection.getInputStream();
@@ -23,6 +21,9 @@ public class RequestHandler {
         pool.execute(()-> {
             try {
                 int n = in.read(buffer);
+                if (n < 1) {
+                    return;
+                }
                 String rawRequest = new String(buffer, 0, n);
 
                 HttpRequest httpRequest = new HttpRequest(rawRequest);

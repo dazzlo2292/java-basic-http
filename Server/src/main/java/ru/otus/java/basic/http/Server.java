@@ -8,13 +8,13 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private final int port;
-    private final Dispatcher dispatcher;
     private final ExecutorService connectionsPool;
+    private final Dispatcher dispatcher;
 
     public Server(int port) {
         this.port = port;
-        this.dispatcher = new Dispatcher();
         this.connectionsPool = Executors.newCachedThreadPool();
+        this.dispatcher = new Dispatcher();
     }
 
     public void start() {
@@ -22,7 +22,7 @@ public class Server {
             System.out.println("Server started to port " + port);
             while (true) {
                 Socket connection = serverSocket.accept();
-                new RequestHandler(connectionsPool, connection);
+                new RequestHandler(connectionsPool, connection, dispatcher);
             }
         } catch (IOException e) {
             e.printStackTrace();

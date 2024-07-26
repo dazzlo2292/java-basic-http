@@ -7,10 +7,19 @@ public class HttpRequest {
     private final String request;
     private String endpoint;
     private HttpMethod method;
+    private String body;
     private Map<String, String> parameters;
+
+    public String getRoutingKey() {
+        return method + " " + endpoint;
+    }
 
     public String getEndpoint() {
         return endpoint;
+    }
+
+    public String getBody() {
+        return body;
     }
 
     public String getParameter(String key) {
@@ -42,10 +51,13 @@ public class HttpRequest {
                 this.parameters.put(keyValue[0], keyValue[1]);
             }
         }
+        if (this.method == HttpMethod.POST) {
+            this.body = rawRequest.substring(rawRequest.indexOf("\r\n\r\n") + 4);
+        }
     }
 
     public void printInfo(boolean rawRequest) {
-        System.out.println("Method: " + method + "\nURL: " + endpoint);
+        System.out.println("Method: " + method + "\nURL: " + endpoint + "\nBody: \n" + body);
         if (rawRequest) {
             System.out.println(request);
         }
