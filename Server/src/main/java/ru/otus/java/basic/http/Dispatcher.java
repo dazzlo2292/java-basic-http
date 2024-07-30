@@ -1,5 +1,7 @@
 package ru.otus.java.basic.http;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.otus.java.basic.http.app.ItemsRepository;
 import ru.otus.java.basic.http.processors.*;
 
@@ -9,15 +11,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Dispatcher {
+    private static final Logger logger = LogManager.getLogger(Server.class.getName());
+
     private final Map<String, RequestProcessor> processors;
     private final RequestProcessor defaultNotFoundRequestProcessor;
     private final RequestProcessor defaultInternalServerRequestProcessor;
     private final RequestProcessor defaultBadRequestProcessor;
 
-    private ItemsRepository itemsRepository;
-
     public Dispatcher() {
-        this.itemsRepository = new ItemsRepository();
+        ItemsRepository itemsRepository = new ItemsRepository();
 
         this.processors = new HashMap<>();
         this.defaultNotFoundRequestProcessor = new DefaultNotFoundRequestProcessor();
@@ -28,6 +30,7 @@ public class Dispatcher {
         processors.put("GET /calc", new CalculatorRequestProcessor());
         processors.put("GET /items", new GetAllItemsRequestProcessor(itemsRepository));
         processors.put("POST /items", new CreateNewItemRequestProcessor(itemsRepository));
+        processors.put("DELETE /items", new DeleteItemRequestProcessor(itemsRepository));
     }
 
     public void execute(HttpRequest httpRequest, OutputStream out) throws IOException {
@@ -38,11 +41,11 @@ public class Dispatcher {
             }
             processors.get(httpRequest.getRoutingKey()).execute(httpRequest, out);
         } catch (BadRequestException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             DefaultBadRequestProcessor.setErrorText(new DefaultErrorDto("request_error",e.getMessage()));
             defaultBadRequestProcessor.execute(httpRequest, out);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             defaultInternalServerRequestProcessor.execute(httpRequest, out);
         }
     }

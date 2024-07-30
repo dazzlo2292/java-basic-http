@@ -1,7 +1,6 @@
 package ru.otus.java.basic.http.processors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ru.otus.java.basic.http.BadRequestException;
 import ru.otus.java.basic.http.HttpRequest;
 import ru.otus.java.basic.http.app.Item;
 import ru.otus.java.basic.http.app.ItemsRepository;
@@ -12,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class GetAllItemsRequestProcessor implements RequestProcessor{
-    private ItemsRepository itemsRepository;
+    private final ItemsRepository itemsRepository;
 
     public GetAllItemsRequestProcessor(ItemsRepository itemsRepository) {
         this.itemsRepository = itemsRepository;

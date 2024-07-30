@@ -1,5 +1,8 @@
 package ru.otus.java.basic.http;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,6 +10,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 public class RequestHandler {
+    private static final Logger logger = LogManager.getLogger(Server.class.getName());
+
     private final byte[] buffer;
     private final Socket connection;
     private final OutputStream out;
@@ -27,11 +32,10 @@ public class RequestHandler {
                 String rawRequest = new String(buffer, 0, n);
 
                 HttpRequest httpRequest = new HttpRequest(rawRequest);
-                httpRequest.printInfo(false);
 
                 dispatcher.execute(httpRequest, out);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             } finally {
                 disconnect();
             }
@@ -43,7 +47,7 @@ public class RequestHandler {
             try {
                 in.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
@@ -51,14 +55,14 @@ public class RequestHandler {
             try {
                 out.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
             }
         }
 
         try {
             connection.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 }
