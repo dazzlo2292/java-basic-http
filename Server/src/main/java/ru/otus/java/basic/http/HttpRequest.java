@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequest {
-    private static final Logger logger = LogManager.getLogger(Server.class.getName());
+    private static final Logger logger = LogManager.getLogger(HttpRequest.class.getName());
 
     private final String request;
     private String endpoint;
@@ -60,13 +60,8 @@ public class HttpRequest {
         for (String header : differentHeaders) {
             String headerKey;
             String headerValue;
-            String[] keyValue = header.split(":");
+            String[] keyValue = header.split(":",2);
             headerKey = keyValue[0].trim();
-            if (headerKey.equals("Host")) {
-                headerValue = keyValue[1].trim() + ":" + keyValue[2].trim();
-                headers.put(headerKey, headerValue);
-                continue;
-            }
             headerValue = keyValue[1].trim();
             headers.put(headerKey, headerValue);
         }

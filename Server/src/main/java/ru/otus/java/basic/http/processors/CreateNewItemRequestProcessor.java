@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class CreateNewItemRequestProcessor implements RequestProcessor{
-    private static final Logger logger = LogManager.getLogger(Server.class.getName());
+    private static final Logger logger = LogManager.getLogger(CreateNewItemRequestProcessor.class.getName());
 
     private final ItemsRepository itemsRepository;
 

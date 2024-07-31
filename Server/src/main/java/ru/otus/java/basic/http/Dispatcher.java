@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Dispatcher {
-    private static final Logger logger = LogManager.getLogger(Server.class.getName());
+    private static final Logger logger = LogManager.getLogger(Dispatcher.class.getName());
 
     private final Map<String, RequestProcessor> processors;
     private final RequestProcessor defaultNotFoundRequestProcessor;

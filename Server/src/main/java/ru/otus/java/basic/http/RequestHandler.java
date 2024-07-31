@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 public class RequestHandler {
-    private static final Logger logger = LogManager.getLogger(Server.class.getName());
+    private static final Logger logger = LogManager.getLogger(RequestHandler.class.getName());
 
     private final byte[] buffer;
     private final Socket connection;
