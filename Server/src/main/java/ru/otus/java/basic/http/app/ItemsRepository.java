@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class ItemsRepository {
-    private List<Item> items;
+    private final List<Item> items;
 
     public ItemsRepository() {
         this.items = new ArrayList<>(Arrays.asList(
@@ -23,5 +23,9 @@ public class ItemsRepository {
         item.setId(newId);
         items.add(item);
         return item;
+    }
+
+    public void delete(long id) {
+        items.removeIf(item -> item.getId() == id);
     }
 }
